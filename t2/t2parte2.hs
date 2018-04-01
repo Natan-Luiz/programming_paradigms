@@ -48,7 +48,10 @@ auxBin2Dec' lst exp = sum (zipWith (calc) lst [exp-1, exp-2..0])
 dec2bin :: Int -> [Int]
 dec2bin 0 = []
 dec2bin num = reverse (dec num)
-  where dec x = (if x `mod` 2 == 0 then 0 else 1): dec2bin (div x 2)
+  
+dec :: Int -> [Int]
+dec 0 = []
+dec x = (if x `mod` 2 == 0 then 0 else 1): dec (div x 2)
 
 --Q6
 
