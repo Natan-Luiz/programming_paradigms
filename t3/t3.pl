@@ -50,9 +50,26 @@ potencias(N,L):-
 
 
 % Q8
+  
+mesmaPosicao(_,[],[]).
+mesmaPosicao(A,L1,L2):-
+    nth0(X,L1,A),
+	nth0(X,L2,A).
 
 
 % Q9
 
 
 % Q10
+
+apoio(N,L):-
+    floor(sqrt(N),P),
+	L is P*P.
+
+azulejos(0, 0).
+azulejos(NA, NQ):-
+    apoio(NA,L),
+    NA2 is NA - L,
+    azulejos(NA2,N),
+    NQ is N+1.
+    
