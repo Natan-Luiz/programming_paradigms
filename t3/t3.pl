@@ -74,7 +74,7 @@ mesmaPosicao(A,L1,L2):-
 
 % Q9
 
-ESSE TROÇO NÃO FAZ SENTIDO NENHUM!!
+% ESSE TROÇO NÃO FAZ SENTIDO NENHUM!!
 
 % Q10
 
