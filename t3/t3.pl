@@ -19,6 +19,12 @@ hasN(L,N) :-
     
 % Q4
 
+potN0(0,[1]).
+potN0(N,L) :-
+    L = [H|T],
+    N1 is N-1,
+    potN0(N1,T),
+    pow(2,N,H).
 
 % Q5
 
@@ -32,6 +38,13 @@ zipmult(L1,L2,L3) :-
 
 % Q6
 
+potencias(0,[1]).
+potencias(N,L):-
+    N1 is N-1,
+    potencias(N1,Init),
+    pow(2,N,Pot),
+    Final = [Pot],
+    append(Init,Final,L).
 
 % Q7
 
