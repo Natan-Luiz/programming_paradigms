@@ -48,6 +48,21 @@ potencias(N,L):-
 
 % Q7
 
+pos(N,[],Ret):-
+    N > 0,
+	Ret = [N].
+pos(N,Base,Ret):-
+    N > 0,
+    append([N],Base,Ret).
+pos(N,Base,Ret):-
+    N =< 0,
+    Ret = Base.
+
+positivos([],[]).
+positivos(L1,L2):-
+    L1 = [H|T],
+    positivos(T,T2),
+    pos(H,T2,L2).
 
 % Q8
   
@@ -59,6 +74,7 @@ mesmaPosicao(A,L1,L2):-
 
 % Q9
 
+ESSE TROÇO NÃO FAZ SENTIDO NENHUM!!
 
 % Q10
 
