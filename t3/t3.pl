@@ -75,6 +75,16 @@ mesmaPosicao(A,L1,L2):-
 
 % Q9
 
+comissao(0,_,[]) :- !.
+comissao(NP,LP,C):-
+    NP1 is NP-1,
+    LP = [H|T],
+    comissao(NP1,T,TA),
+    C = [H|TA].
+comissao(NP,LP,C):-
+    NP>0,
+    LP=[_|T],
+    comissao(NP,T,C).
 
 
 % Q10
