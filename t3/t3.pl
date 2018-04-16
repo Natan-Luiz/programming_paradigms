@@ -15,11 +15,12 @@ has5(L):-
 % Q3
 
 hasN(L,N) :-
+    N>=0,
     length(L,N).
     
 % Q4
 
-potN0(0,[1]).
+potN0(0,[1]) :- !.
 potN0(N,L) :-
     L = [H|T],
     N1 is N-1,
@@ -28,7 +29,7 @@ potN0(N,L) :-
 
 % Q5
 
-zipmult([],[],[]).
+zipmult([],[],[]) :- !.
 zipmult(L1,L2,L3) :-
     L1 = [H1|T1],
     L2 = [H2|T2],
@@ -38,7 +39,7 @@ zipmult(L1,L2,L3) :-
 
 % Q6
 
-potencias(0,[1]).
+potencias(0,[1]) :- !.
 potencias(N,L):-
     N1 is N-1,
     potencias(N1,Init),
@@ -58,7 +59,7 @@ pos(N,Base,Ret):-
     N =< 0,
     Ret = Base.
 
-positivos([],[]).
+positivos([],[]) :- !.
 positivos(L1,L2):-
     L1 = [H|T],
     positivos(T,T2),
@@ -66,7 +67,7 @@ positivos(L1,L2):-
 
 % Q8
   
-mesmaPosicao(_,[],[]).
+mesmaPosicao(_,[],[]):- !.
 mesmaPosicao(A,L1,L2):-
     nth0(X,L1,A),
 	nth0(X,L2,A).
@@ -74,7 +75,7 @@ mesmaPosicao(A,L1,L2):-
 
 % Q9
 
-% ESSE TROÇO NÃO FAZ SENTIDO NENHUM!!
+
 
 % Q10
 
@@ -82,7 +83,7 @@ apoio(N,L):-
     floor(sqrt(N),P),
 	L is P*P.
 
-azulejos(0, 0).
+azulejos(0, 0) :- !.
 azulejos(NA, NQ):-
     apoio(NA,L),
     NA2 is NA - L,
