@@ -1,0 +1,20 @@
+cofre :: Int->Int->[Int]->[Int]->[Int]
+cofre m n barra sec = recursao n barra sec (take 10 [0,0..])
+
+
+recursao :: Int -> [Int] -> [Int] -> [Int]-> [Int]
+recursao x barra sec ret
+  | x > 1 = recursao (x-1) barra (tail sec) ( zipWith (+) (somaUm (men sec) (mai sec) barra) ret) 
+  | otherwise = ret
+  where mai sec = if (head (tail sec)) > (head sec) then (head (tail sec)) else (head sec)
+        men sec = if (head (tail sec)) < (head sec) then (head (tail sec)) else (head sec)
+  
+
+somaUm :: Int->Int->[Int]->[Int]
+somaUm pos1 pos2 lst = each (drop (pos1) (take (pos2+1) lst))
+
+each :: [Int] -> [Int]
+each lst = [(suma x lst)| x <- (take 10 [0,1..])]
+
+suma :: Int -> [Int] -> Int
+suma x lst = if elem x lst then 1 else 0
