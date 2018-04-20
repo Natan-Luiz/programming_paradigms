@@ -1,5 +1,5 @@
 cofre :: Int->Int->[Int]->[Int]->[Int]
-cofre m n barra sec = recursao n n barra sec (take 10[0,0..]
+cofre m n barra sec = recursao n n barra sec (take 10[0,0..])
 
 recursao :: Int -> Int -> [Int] -> [Int] -> [Int]-> [Int]
 recursao vI x barra sec ret
@@ -16,28 +16,4 @@ each :: [Int] -> [Int]
 each lst = [(suma x lst)| x <- [0..9]]
 
 suma :: Int -> [Int] -> Int
-suma x lst = if elem x lst then 1 else 0
-
-
-/////
-
-
-cofre :: Int->Int->[Int]->[Int]->[Int]
-cofre m n barra sec = recursao n n barra sec (take 10[0,0..])
-
-recursao :: Int -> Int -> [Int] -> [Int] -> [Int]-> [Int]
-recursao vI x barra sec ret
-  | x >= vI = recursao vI (x-1) barra (tail sec) ( zipWith (+) (somaUm (0) (mai sec) barra) ret)
-  | x > 1 = recursao vI (x-1) barra (tail sec) ( zipWith (+) (somaUm (men sec) (mai sec) barra) ret) 
-  | otherwise = ret
-  where mai sec = if (head (tail sec)) > (head sec) then         (head(tail sec)) else (head sec)-1
-        men sec = if (head (tail sec)) < (head sec) then (head (tail sec))-1 else (head sec)
-
-somaUm :: Int->Int->[Int]->[Int]
-somaUm pos1 pos2 lst = each (drop (pos1) (take (pos2) lst))
-
-each :: [Int] -> [Int]
-each lst = [(suma x lst)| x <- [0..9]]
-
-suma :: Int -> [Int] -> Int
-suma x lst = if elem x lst then 1 else 0
+suma x lst = length(filter(==x) lst)
