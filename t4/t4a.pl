@@ -1,7 +1,7 @@
 %
 %  T4 - Natan Luiz Paetzhold Berwaldt
 %
-% 
+%   Tentei fazer o codigo de forma semelhante a estrategia do jogo do Einstein
 %
 %    CD Independente
 %  Uma banda formada por alunos e alunas da escola est´a gravando um CD com exatamente sete m´usicas
@@ -18,11 +18,11 @@
 % - Z e um sucesso de rock
 %
 
-% - Tipo uma declaração dos predicados que terei que usar.
-rockSucesso(X).
-compBanda(X).
+% - Declaração dos predicados que terei que usar.
+rockSucesso(_).
+compBanda(_).
 
-vemAntes(X,Y) :- nth0(R1,CD,w), nth0(R2,CD,y), R1 < R2.
+vemAntes(X,Y, List) :- nth0(R1,List,X), nth0(R2,List,Y), R1 < R2.
 
 %- Predicado de solucao do problema
 solucao(CD):-
@@ -39,11 +39,11 @@ solucao(CD):-
     member(z,CD),
     
     % Tanto W como Y precedem S no CD
-    vemAntes(w,s),
-    vemAntes(y,s),
+    vemAntes(w,s,CD),
+    vemAntes(y,s,CD),
     
     % T precede W no CD
-    vemAntes(t,w),
+    vemAntes(t,w,CD),
     
     % Um sucesso de rock ocupa a sexta faixa 
     nth1(6,CD,C),
@@ -58,7 +58,7 @@ solucao(CD):-
     nextto(A,B,CD),
     
     % S ocupa a quarta faixa do CD
-    nth1(4,CD,s),.
+    [_,_,_,s,_,_,_] = CD.
 
 %Questao 11. Qual das seguintes alternativas poderia
 %ser a ordem das musicas no CD, da primeira
