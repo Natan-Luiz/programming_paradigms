@@ -1,40 +1,64 @@
 %
+%  T4 - Natan Luiz Paetzhold Berwaldt
+%
+% 
+%
 %    CD Independente
-%  Uma banda formada por alunos e alunas da escola est´a gravando um CD com exatamente sete m´usicas
-% distintas – S, T, V, W, X, Y e Z. Cada m´usica ocupa exatamente uma das sete faixas contidas no
-% CD. Algumas das m´usicas s˜ao sucessos antigos de rock; outras s˜ao composi¸c˜oes da pr´opria banda. As
-% seguintes restri¸c˜oes devem ser obedecidas:
+%  Uma banda formada por alunos e alunas da escola estÂ´a gravando um CD com exatamente sete mÂ´usicas
+% distintas â€“ S, T, V, W, X, Y e Z. Cada mÂ´usica ocupa exatamente uma das sete faixas contidas no
+% CD. Algumas das mÂ´usicas sËœao sucessos antigos de rock; outras sËœao composiÂ¸cËœoes da prÂ´opria banda. As
+% seguintes restriÂ¸cËœoes devem ser obedecidas:
 % - S ocupa a quarta faixa do CD.
-% - Tanto W como Y precedem S no CD (ou seja, W e Y est˜ao numa faixa que ´e tocada antes de S
+% - Tanto W como Y precedem S no CD (ou seja, W e Y estËœao numa faixa que Â´e tocada antes de S
 % no CD).
-% - T precede W no CD (ou seja, T est´a numa faixa que ´e tocada antes de W).
+% - T precede W no CD (ou seja, T estÂ´a numa faixa que Â´e tocada antes de W).
 % - Um sucesso de rock ocupa a sexta faixa do CD.
-% - Cada sucesso de rock ´e imediatamente precedido no CD por uma composi¸c˜ao da banda (ou seja,
-% no CD cada sucesso de rock toca imediatamente ap´os uma composi¸c˜ao da banda).
+% - Cada sucesso de rock Â´e imediatamente precedido no CD por uma composiÂ¸cËœao da banda (ou seja,
+% no CD cada sucesso de rock toca imediatamente apÂ´os uma composiÂ¸cËœao da banda).
 % - Z e um sucesso de rock
 %
 
+% - Tipo uma declaraÃ§Ã£o dos predicados que terei que usar.
 rockSucesso(X).
 compBanda(X).
 
+vemAntes(X,Y) :- nth0(R1,CD,w), nth0(R2,CD,y), R1 < R2.
+
+%- Predicado de solucao do problema
 solucao(CD):-
-	CD = [_,_,_,_,_,_,_],
+    % Cada musica ocupa exatamente uma das sete faixas contidas no CD
+    CD = [_,_,_,_,_,_,_],
+    
+    % adicao dos nomesâ€“ S, T, V, W, X, Y e Z
     member(s,CD),
     member(t,CD),
-	member(v,CD),
-	member(w,CD),
-	member(x,CD),
-	member(y,CD),
+    member(v,CD),
+    member(w,CD),
+    member(x,CD),
+    member(y,CD),
     member(z,CD),
-    nth0(W,CD,w), nth0(Y,CD,y), nth0(S,CD,s), Y < S, W < S,
-    nth0(T,CD,t), T < W,
-    nth0(5,CD,C),
-	rockSucesso(C),
+    
+    % Tanto W como Y precedem S no CD
+    vemAntes(w,s),
+    vemAntes(y,s),
+    
+    % T precede W no CD
+    vemAntes(t,w),
+    
+    % Um sucesso de rock ocupa a sexta faixa 
+    nth1(6,CD,C),
+    rockSucesso(C),
+    
+    % Z e um sucesso de rock
     rockSucesso(z),
+    
+    % Cada sucesso de rock Â´e imediatamente precedido no CD por uma composiÂ¸cËœao da banda
     compBanda(A),
     rockSucesso(B),
-	nextto(A,B,CD),
-    [_,_,_,s,_,_,_]=CD.
+    nextto(A,B,CD),
+    
+    % S ocupa a quarta faixa do CD
+    nth1(4,CD,s),.
 
 %Questao 11. Qual das seguintes alternativas poderia
 %ser a ordem das musicas no CD, da primeira
