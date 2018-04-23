@@ -68,3 +68,44 @@ solucao(CD):-
 %(C) solucao([x,y,w,s,t,z,s])
 %(D) solucao([y,t,w,s,x,z,v])
 %(E) solucao([z,t,x,w,v,y,s])
+
+
+
+regra1(List, X) :-
+    nth1(4,List,X).
+    
+regra2e3(X,Y,List) :-
+    nth0(R1,List,X), nth0(R2,List,Y), R1 < R2.
+
+regra4(List,X) :-
+	nth1(X,List,C),
+	sucessoRock(C).
+
+regra5(List) :-
+    sucessoRock(A),
+    compBanda(B),
+	nextto(B,A,List).
+
+regra6(X) :-
+	sucessoRock(X).
+
+solucao2(CD) :-
+    % Cada musica ocupa exatamente uma das sete faixas contidas no CD
+    CD = [_,_,_,_,_,_,_],
+    
+    % adicao dos nomes– S, T, V, W, X, Y e Z
+    member(s,CD),
+    member(t,CD),
+    member(v,CD),
+    member(w,CD),
+    member(x,CD),
+    member(y,CD),
+	member(z,CD),
+    
+    regra1(CD,s),
+    regra2e3(w,s,CD),
+    regra2e3(y,s,CD),
+    regra2e3(t,w,CD),
+    regra4(CD,6),
+    regra5(CD),
+    regra6(z).
