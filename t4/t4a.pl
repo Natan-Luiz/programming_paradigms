@@ -18,48 +18,6 @@
 % - Z e um sucesso de rock
 %
 
-% - Declaração dos predicados que terei que usar.
-rockSucesso(_).
-compBanda(_).
-
-vemAntes(X,Y, List) :- nth0(R1,List,X), nth0(R2,List,Y), R1 < R2.
-
-%- Predicado de solucao do problema
-solucao(CD):-
-    % Cada musica ocupa exatamente uma das sete faixas contidas no CD
-    CD = [_,_,_,_,_,_,_],
-    
-    % adicao dos nomes– S, T, V, W, X, Y e Z
-    member(s,CD),
-    member(t,CD),
-    member(v,CD),
-    member(w,CD),
-    member(x,CD),
-    member(y,CD),
-    member(z,CD),
-    
-    % Tanto W como Y precedem S no CD
-    vemAntes(w,s,CD),
-    vemAntes(y,s,CD),
-    
-    % T precede W no CD
-    vemAntes(t,w,CD),
-    
-    % Um sucesso de rock ocupa a sexta faixa 
-    nth1(6,CD,C),
-    rockSucesso(C),
-    
-    % Z e um sucesso de rock
-    rockSucesso(z),
-    
-    % Cada sucesso de rock ´e imediatamente precedido no CD por uma composi¸c˜ao da banda
-    compBanda(A),
-    rockSucesso(B),
-    nextto(A,B,CD),
-    
-    % S ocupa a quarta faixa do CD
-    [_,_,_,s,_,_,_] = CD.
-
 %Questao 11. Qual das seguintes alternativas poderia
 %ser a ordem das musicas no CD, da primeira
 %para a setima faixa?
@@ -70,6 +28,9 @@ solucao(CD):-
 %(E) solucao([z,t,x,w,v,y,s])
 
 
+% - Declaração dos predicados que terei que usar.
+rockSucesso(_).
+compBanda(_).
 
 regra1(List, X) :-
     nth1(4,List,X).
@@ -100,7 +61,7 @@ solucao2(CD) :-
     member(w,CD),
     member(x,CD),
     member(y,CD),
-	member(z,CD),
+    member(z,CD),
     
     regra1(CD,s),
     regra2e3(w,s,CD),
