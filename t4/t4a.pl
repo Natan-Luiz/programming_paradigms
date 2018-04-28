@@ -29,7 +29,7 @@
 
 
 % - Declaração dos predicados que terei que usar.
-rockSucesso(_).
+sucessoRock(_).
 compBanda(_).
 
 regra1(List, X) :-
@@ -50,7 +50,7 @@ regra5(List) :-
 regra6(X) :-
 	sucessoRock(X).
 
-solucao2(CD) :-
+solucao(CD) :-
     % Cada musica ocupa exatamente uma das sete faixas contidas no CD
     CD = [_,_,_,_,_,_,_],
     
