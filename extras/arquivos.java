@@ -1,6 +1,6 @@
 /* Natan Luiz Paetzhold Berwaldt
  * 
- *  https://olimpiada.ic.unicamp.br/pratique/p1/2015/f1/arquivos/
+ *  Questão retirada de: https://olimpiada.ic.unicamp.br/pratique/p1/2015/f1/arquivos/
  *
  * Arquivos
  * 
@@ -16,6 +16,10 @@
  * A entrada consiste de duas linhas. A primeira linha contÃ©m os nÃºmeros inteiros N e B. A segunda linha contÃ©m N inteiros indicando o tamanho de cada arquivo.
  * SaÃ­da
  * Seu programa deve escrever uma Ãºnica linha na saÃ­da, contendo um Ãºnico nÃºmero inteiro, a quantidade mÃ­nima possÃ­vel de pastas. 
+ * 
+ *  Logica de resposta baseada em: https://github.com/Rafael-v/paradigmasdeprogramacao/blob/master/extras/obi/arquivos.hs
+ *
+ *  A função main() não faz parte da solução geral do problema, então usei-a para criar/guardar as variáveis, as quais seriam argumentos passados para a parte "funcional".
  */
 
 package arquivos;
@@ -31,7 +35,7 @@ public class Arquivos {
         int a = 5;
         int b = 4;
         ArrayList lst = new ArrayList<>(Arrays.asList(4,3,1,2,2));
-        System.out.print(programa.arquivos(a,b,lst));
+        System.out.println(programa.arquivos(a,b,lst));
     }
     public int arquivos(int num, int max, ArrayList arqs)
     {
