@@ -1,4 +1,7 @@
 /* Natan Luiz Paetzhold Berwaldt
+ * 
+ *  https://olimpiada.ic.unicamp.br/pratique/p1/2015/f1/arquivos/
+ *
  * Arquivos
  * 
  * Aldo tem N arquivos em seu computador, cada um com um tamanho em bytes. Ele quer dividir estes arquivos em pastas, porÃ©m o sistema do computador Ã© velho e sÃ³ aceita pastas com as duas seguintes limitaÃ§Ãµes:
