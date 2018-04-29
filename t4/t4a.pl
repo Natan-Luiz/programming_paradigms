@@ -21,17 +21,18 @@
 %Questao 11. Qual das seguintes alternativas poderia
 %ser a ordem das musicas no CD, da primeira
 %para a setima faixa?
-%(A) solucao([t,w,v,s,y,x,z])
-%(B) solucao([v,y,t,s,w,z,x])
-%(C) solucao([x,y,w,s,t,z,s])
-%(D) solucao([y,t,w,s,x,z,v])
-%(E) solucao([z,t,x,w,v,y,s])
+%(A)  ?- solucao([t,w,v,s,y,x,z])
+%(B)  ?- solucao([v,y,t,s,w,z,x])
+%(C)  ?- solucao([x,y,w,s,t,z,s])
+%(D)  ?- solucao([y,t,w,s,x,z,v])
+%(E)  ?- solucao([z,t,x,w,v,y,s])
 
 
 % - Declaração dos predicados que terei que usar.
 sucessoRock(_).
 compBanda(_).
 
+% - Regras implementadas da maneira mais generica possivel.
 regra1(List, X) :-
     nth1(4,List,X).
     
@@ -54,7 +55,9 @@ solucao(CD) :-
     % Cada musica ocupa exatamente uma das sete faixas contidas no CD
     CD = [_,_,_,_,_,_,_],
     
-    % adicao dos nomes– S, T, V, W, X, Y e Z
+    % adicao dos nomes– S, T, V, W, X, Y e Z; Alternativa ao uso da permutação.
+    % Alternativa apesar de mais extensa(uma linha para cada novo item), 
+    % permite uma generalização maior das funçoes.
     member(s,CD),
     member(t,CD),
     member(v,CD),
@@ -63,6 +66,7 @@ solucao(CD) :-
     member(y,CD),
     member(z,CD),
     
+    % Aplicação das regras aos itens especificos para a solução.
     regra1(CD,s),
     regra2e3(w,s,CD),
     regra2e3(y,s,CD),
