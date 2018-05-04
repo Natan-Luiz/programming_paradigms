@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  *
- * @author Rafael Vales
+ *  @author Rafael Vales
  */
 public class Cofre {
 
