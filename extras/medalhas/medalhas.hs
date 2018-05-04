@@ -14,12 +14,12 @@ Seu programa deve imprimir três linhas na saída. A primeira linha deve conter 
 import Data.List
 
 medalhas :: Int -> Int -> Int -> [Int]
-medalhas x1 x2 x3 = a [x1,x2,x3] (sort [x1,x2,x3])
+medalhas x1 x2 x3 = ordena [x1,x2,x3] (sort [x1,x2,x3])
 
 
-a :: [Int] -> [Int] -> [Int]
-a [] _ = []
-a (x:xs) lstord = (b x lstord):(a xs lstord)
+ordena :: [Int] -> [Int] -> [Int]
+ordena [] _ = []
+ordena (x:xs) lstOrd = (getPos x lstOrd):(ordena xs lstOrd)
 
-b :: Int -> [Int] -> Int
-b x lst = length (takeWhile (/= x) lst) + 1
+getPos :: Int -> [Int] -> Int
+getPos x lst = length (takeWhile (/= x) lst) + 1
