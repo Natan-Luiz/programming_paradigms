@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.*;
-
-
+/*
+* @author Natan Luiz
+*/
 public class Cofre {
 
     public static void main(String[] args) {
