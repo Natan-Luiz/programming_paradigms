@@ -1,19 +1,28 @@
-cofre :: Int->Int->[Int]->[Int]->[Int]
-cofre m n barra sec = recursao n n barra sec (take 10[0,0..])
+import java.util.Scanner;
+import java.io.File;
 
-recursao :: Int -> Int -> [Int] -> [Int] -> [Int]-> [Int]
-recursao vI x barra sec ret
-  | x >= vI = recursao vI (x-1) barra (tail sec) ( zipWith (+) (somaUm (0) (mai sec) barra) ret)
-  | x > 1 = recursao vI (x-1) barra (tail sec) ( zipWith (+) (somaUm (men sec) (mai sec) barra) ret) 
-  | otherwise = ret
-  where mai sec = if (head (tail sec)) > (head sec) then (head        (tail sec)) else (head sec)-1
-        men sec = if (head (tail sec)) < (head sec) then (head (tail sec))-1 else (head sec)
+public class TestCircle {
+   public static void main(String[] args) {
 
-somaUm :: Int->Int->[Int]->[Int]
-somaUm pos1 pos2 lst = each (drop (pos1) (take (pos2) lst))
+     Scanner sc = new Scanner();
 
-each :: [Int] -> [Int]
-each lst = [(suma x lst)| x <- [0..9]]
+     double x = sc.nextDouble();
+     double y = sc.nextDouble();
+     double r = sc.nextDouble();
+     
+     Circle c = new Circle(x,y,r);
 
-suma :: Int -> [Int] -> Int
-suma x lst = length(filter(==x) lst)
+     double borda = sc.nextDouble();
+     String cor_borda = sc.next();
+     String cor = sc.next();
+
+     System.out.println("<svg height=\"100\" width=\"100\">");
+     System.out.print("<circle cx="50" cy="50" r="40" stroke="+cor_borda +" ");
+     System.out.println("stroke-width="+ borda +" fill="+ cor +" /></svg>");
+     //List<String> lines = Arrays.asList("The first line", "The second line");
+     //Path file = Paths.get("svag.html");
+     //Files.write(file, lines, Charset.forName("UTF-8"));
+
+
+   }
+}
