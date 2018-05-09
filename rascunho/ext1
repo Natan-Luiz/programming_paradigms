@@ -1,28 +1,45 @@
-import java.util.Scanner;
-import java.io.File;
+package circlemaker;
 
-public class TestCircle {
-   public static void main(String[] args) {
+    import java.util.Scanner;
+    import java.io.FileWriter;
+    import java.io.IOException;
+    import java.io.PrintWriter;
 
-     Scanner sc = new Scanner();
+public class CircleMaker {
+   public static void main(String[] args) throws IOException {
+     
+      CircleMaker zz = new CircleMaker();
+      Circle c = zz.gera_circulo(); 
+       
+       
+     String buffer = String.format("<svg height=\"100\" width=\"100\">");
+     buffer = String.format(buffer+"<circle cx=\""+c.getX()+"\" cy=\""+c.getY()+"\" r=\""+c.raio()+"\" stroke=\""+c.cor_borda +"\" ");
+     buffer = String.format(buffer+"stroke-width=\""+ c.borda +"\" fill=\""+ c.cor +"\"></svg>");
+     
+
+    FileWriter arq = new FileWriter("svga.html");
+    PrintWriter grv = new PrintWriter(arq);
+    
+    grv.printf(buffer);
+    
+    arq.close();
+    System.out.println(buffer);
+
+   }
+   
+   public Circle gera_circulo()
+   {
+    Scanner sc = new Scanner(System.in);
 
      double x = sc.nextDouble();
      double y = sc.nextDouble();
      double r = sc.nextDouble();
-     
-     Circle c = new Circle(x,y,r);
 
      double borda = sc.nextDouble();
      String cor_borda = sc.next();
      String cor = sc.next();
-
-     System.out.println("<svg height=\"100\" width=\"100\">");
-     System.out.print("<circle cx="50" cy="50" r="40" stroke="+cor_borda +" ");
-     System.out.println("stroke-width="+ borda +" fill="+ cor +" /></svg>");
-     //List<String> lines = Arrays.asList("The first line", "The second line");
-     //Path file = Paths.get("svag.html");
-     //Files.write(file, lines, Charset.forName("UTF-8"));
-
-
+     
+     Circle c = new Circle(x,y,r,borda,cor,cor_borda);
+     return c;
    }
 }
