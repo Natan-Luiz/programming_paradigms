@@ -13,16 +13,15 @@ public class CircleMaker {
        
        
      String buffer = String.format("<svg height=\"100\" width=\"100\">");
-     buffer = String.format(buffer+"<circle cx=\""+c.getX()+"\" cy=\""+c.getY()+"\" r=\""+c.raio()+"\" stroke=\""+c.cor_borda +"\" ");
-     buffer = String.format(buffer+"stroke-width=\""+ c.borda +"\" fill=\""+ c.cor +"\"></svg>");
+     buffer = String.format(buffer+"<circle cx=\""+c.getX()+"\" cy=\""+c.getY()+"\" r=\""+c.raio()+"\" stroke=\""+c.bordaCor() +"\" ");
+     buffer = String.format(buffer+"stroke-width=\""+ c.borda() +"\" fill=\""+ c.cor() +"\"></svg>");
      
 
     FileWriter arq = new FileWriter("svga.html");
     PrintWriter grv = new PrintWriter(arq);
-    
+           
     grv.printf(buffer);
     
-    arq.close();
     System.out.println(buffer);
 
    }
@@ -31,12 +30,16 @@ public class CircleMaker {
    {
     Scanner sc = new Scanner(System.in);
 
+    System.out.print("Digite as coordenadas, X, Y e o raio do circulo:");
      double x = sc.nextDouble();
      double y = sc.nextDouble();
      double r = sc.nextDouble();
 
+     System.out.print("Digite a espessura e cor da borda do circulo:");
      double borda = sc.nextDouble();
      String cor_borda = sc.next();
+      
+     System.out.print("Digite a cor do interiror do circulo:");
      String cor = sc.next();
      
      Circle c = new Circle(x,y,r,borda,cor,cor_borda);
