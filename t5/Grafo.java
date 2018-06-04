@@ -1,10 +1,10 @@
+package makegraph;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import static javafx.scene.paint.Color.color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
@@ -26,7 +26,6 @@ class Grafo{
    public Aresta addAresta(Line l){
        Vertice v = this.isVertice(l.getStartX(), l.getStartY());
        if(v==null) {
-           System.out.println("!!");
            return null;
        }
        Aresta a = new Aresta(v,l);
@@ -92,16 +91,19 @@ class Grafo{
       PrintWriter pw = new PrintWriter(file);
             
             pw.println("<svg height=\"" + 500 + "\" width=\"" + 600 + "\">");
-            for (Vertice v : this.verts)
-                for (Aresta a : v.saidas)
+            this.verts.forEach((v) -> {
+                v.saidas.forEach((a) -> {
                     if(a.getStrokeDashArray().isEmpty())
-                       pw.println("<line x1=\""+a.getStartX()+"\" y1=\""+a.getStartY()+"\" x2=\""+a.getEndX()+"\" y2=\""+a.getEndY()+"\" stroke-dasharray=\" 0 \" style=\"stroke:"+a.getColorHex()+";stroke-width:"+(a.getStrokeWidth()*1.3)+"\" />");
+                        pw.println("<line x1=\""+a.getStartX()+"\" y1=\""+a.getStartY()+"\" x2=\""+a.getEndX()+"\" y2=\""+a.getEndY()+"\" stroke-dasharray=\" 0 \" style=\"stroke:"+a.getColorHex()+";stroke-width:"+(a.getStrokeWidth()*1.3)+"\" />");
                     else
                         pw.println("<line x1=\""+a.getStartX()+"\" y1=\""+a.getStartY()+"\" x2=\""+a.getEndX()+"\" y2=\""+a.getEndY()+"\" stroke-dasharray=\" "+ a.getStrokeDashArray().get(0) +" "+ a.getStrokeDashArray().get(0) +"\" style=\"stroke:"+a.getColorHex()+";stroke-width:"+(a.getStrokeWidth()*1.3)+"\" />");
-            for (Vertice v : this.verts){
-                System.out.println("oi:"+v.getFill());
+                });
+           });
+            
+            this.verts.forEach((v) -> {
                 pw.println("  <circle cx=\"" + v.getCenterX() + "\" cy=\"" + v.getCenterY()  + "\" r=\"" + v.getRadius() + "\" stroke=\"black\" stroke-width=\""+v.getStrokeWidth()+"\" fill=\"" + v.getColorHex() + "\" />");
-            }pw.println("</svg>");
+            });
+            pw.println("</svg>");
                         
             pw.close();
        return 0;
