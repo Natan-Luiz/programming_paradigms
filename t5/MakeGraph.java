@@ -1,5 +1,3 @@
-package makegraph;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import javafx.application.Application;
