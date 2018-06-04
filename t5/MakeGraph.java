@@ -1,7 +1,7 @@
+package makegraph;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.input.MouseEvent;
@@ -18,7 +18,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Background;
 import javafx.scene.control.Button;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ColorPicker;
@@ -28,15 +27,15 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 
 
-public class MouseCircles extends Application {
+public class MakeGraph extends Application {
 
-   private static Grafo ALL;
-   private static int tool;
-   private static int select;
-   private static Pane pane;
-   private static Color color;
-   private static float stroke;
-   private static double stroke2;
+   private Grafo ALL;
+   private int tool;
+   private int select;
+   private Pane pane;
+   private Color color;
+   private float stroke;
+   private double stroke2;
    
    @Override
    public void start(Stage stage) {
@@ -103,7 +102,6 @@ public class MouseCircles extends Application {
                  a.setStrokeWidth(stroke);
                  a.setStartX(ALL.verts.get(select).getCenterX());
                  a.setStartY(ALL.verts.get(select).getCenterY());
-                // ALL.verts.get(select).saidas.add(a);
                  ALL.verts.get(select).setStroke(Color.YELLOW);
               }
           }
@@ -111,7 +109,7 @@ public class MouseCircles extends Application {
    }
    
    
-    public static void Interface(Stage stage, Pane pane){
+    public void Interface(Stage stage, Pane pane){
        BorderPane root = new BorderPane();
        
        
@@ -241,7 +239,6 @@ public class MouseCircles extends Application {
                 try { 
                     ALL.makeSVG(file);
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(MouseCircles.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
       });
