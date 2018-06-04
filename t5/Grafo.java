@@ -12,7 +12,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 
 class Grafo{
-   public int crosses;
+   private int crosses;
    public List<Vertice> verts;
    public Grafo(){
       crosses = 0;
@@ -36,23 +36,25 @@ class Grafo{
        return a;
    }
    
-   public void checkCrosses(Aresta aresta, Vertice vertice){
+   public int checkCrosses(){
+       crosses = 0;
         this.verts.forEach((v) -> {
           v.saidas.forEach((a) -> {
-            Shape extra = Shape.intersect(a, aresta);
-            System.out.println("OOOO");
-            if( extra.getBoundsInLocal().getWidth() != -1 && a != aresta){
-                System.out.println("AAAA");
-                if(a.v2 != aresta.v2 && a.v2 != vertice){
-                    System.out.println("BBBB");
-                    if(v != aresta.v2 && v != vertice){
-                        System.out.println("CCCC");
-                       this.crosses ++;
-                    }
-                }
-            }
-         });
-       });
+             this.verts.forEach((w) -> {
+               if(v != w){ 
+                  w.saidas.forEach((ar) -> {
+                      if (a != ar){
+                         Shape intersect = Shape.intersect(a, ar);
+                         if (intersect.getBoundsInLocal().getWidth() != -1)
+                            if(ar.getEnd() != v && a.getEnd() != w && ar.getEnd() != a.getEnd())
+                               crosses++;
+                      }
+                  });
+               }
+             });
+           });
+        });
+        return crosses/2;
    }
    
    public Vertice isVertice(double x, double y){
@@ -76,13 +78,13 @@ class Grafo{
    private int isReallyOk(int ini, int end){
        if(end == -1) return ini;
        for(Aresta a: this.verts.get(ini).saidas){        
-           if(a.v2 == this.verts.get(end))
+           if(a.getEnd() == this.verts.get(end))
                return -1;
        }
        if(this.verts.get(end).saidas.isEmpty()) return ini;
        
        for(Aresta a: this.verts.get(end).saidas){        
-           if(a.v2 == this.verts.get(ini))
+           if(a.getEnd() == this.verts.get(ini))
                return -1;
        }
        return ini;
@@ -95,9 +97,9 @@ class Grafo{
             for (Vertice v : this.verts)
                 for (Aresta a : v.saidas)
                     if(a.getStrokeDashArray().isEmpty())
-                       pw.println("<line x1=\""+a.getStartX()+"\" y1=\""+a.getStartY()+"\" x2=\""+a.getEndX()+"\" y2=\""+a.getEndY()+"\" stroke-dasharray=\" 0 \" style=\"stroke:"+a.getColorHex()+";stroke-width:"+(a.getStrokeWidth()*1.5)+"\" />");
+                       pw.println("<line x1=\""+a.getStartX()+"\" y1=\""+a.getStartY()+"\" x2=\""+a.getEndX()+"\" y2=\""+a.getEndY()+"\" stroke-dasharray=\" 0 \" style=\"stroke:"+a.getColorHex()+";stroke-width:"+(a.getStrokeWidth()*1.3)+"\" />");
                     else
-                        pw.println("<line x1=\""+a.getStartX()+"\" y1=\""+a.getStartY()+"\" x2=\""+a.getEndX()+"\" y2=\""+a.getEndY()+"\" stroke-dasharray=\" "+ a.getStrokeDashArray().get(0) +" "+ a.getStrokeDashArray().get(0) +"\" style=\"stroke:"+a.getColorHex()+";stroke-width:"+(a.getStrokeWidth()*1.5)+"\" />");
+                        pw.println("<line x1=\""+a.getStartX()+"\" y1=\""+a.getStartY()+"\" x2=\""+a.getEndX()+"\" y2=\""+a.getEndY()+"\" stroke-dasharray=\" "+ a.getStrokeDashArray().get(0) +" "+ a.getStrokeDashArray().get(0) +"\" style=\"stroke:"+a.getColorHex()+";stroke-width:"+(a.getStrokeWidth()*1.3)+"\" />");
             for (Vertice v : this.verts){
                 System.out.println("oi:"+v.getFill());
                 pw.println("  <circle cx=\"" + v.getCenterX() + "\" cy=\"" + v.getCenterY()  + "\" r=\"" + v.getRadius() + "\" stroke=\"black\" stroke-width=\""+v.getStrokeWidth()+"\" fill=\"" + v.getColorHex() + "\" />");
@@ -112,7 +114,6 @@ class Grafo{
            v.saidas.clear();
        });
        this.verts.clear();
-       this.crosses = 0;
    }
    
    public int getGraphVerticesSize(){
@@ -121,9 +122,6 @@ class Grafo{
    public int getGraphArestasSize(){
        return this.verts.stream().map((v) -> v.saidas.size()).reduce(0, Integer::sum);
     }
-    public int getGraphCrosses(){
-       return this.crosses;
-   }
 }
 
 
@@ -155,7 +153,7 @@ class Vertice extends Circle{
 
 
 class Aresta extends Line{
-   public Vertice v2;
+   private Vertice v2;
    public Aresta(Vertice ver, Line l){
       v2 = null;
       this.setStartX(ver.getCenterX());
@@ -178,5 +176,13 @@ class Aresta extends Line{
    public String getColorHex() {
         String a = this.getStroke().toString();
         return "#"+ a.substring(2, 8);
+   }
+   
+   public void setEnd(Vertice v){
+       this.v2 = v;
+   }
+   
+   public Vertice getEnd(){
+       return this.v2;
    }
 }
