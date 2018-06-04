@@ -1,7 +1,3 @@
-
-package mousecircles;
-
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
