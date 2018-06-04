@@ -71,11 +71,10 @@ public class MouseCircles extends Application {
            
            else if(select != -1 && 0 <= ALL.isOk(e.getX(),e.getY(),select)){
               Aresta a = ALL.verts.get(select).saidas.get( ALL.verts.get(select).saidas.size() - 1 );
-              a.v2  = ALL.verts.get( ALL.isOk(e.getX(),e.getY(),-1) );
-              a.setEndX(a.v2.getCenterX());
-              a.setEndY(a.v2.getCenterY());
+              a.setEnd(ALL.verts.get( ALL.isOk(e.getX(),e.getY(),-1) ));
+              a.setEndX(a.getEnd().getCenterX());
+              a.setEndY(a.getEnd().getCenterY());
               ALL.verts.get(select).setStroke(Color.BLACK);
-              ALL.checkCrosses(a, ALL.verts.get(select));
               select = -1;
               pane.getChildren().add(a);
           }
@@ -118,19 +117,26 @@ public class MouseCircles extends Application {
    
     public static void Interface(Stage stage, Pane pane){
        BorderPane root = new BorderPane();
-
+       
+       
+      //Criação de Telas
       BorderPane toolbar = new BorderPane();
       HBox selector = new HBox();
       VBox preferences = new VBox();
       VBox menubox = new VBox();
       
+      
+      //Criação de Botoes
       Button vertice = new Button("Vertices");
       Button arresta = new Button("Arestas");
       Button novo = new Button("New Graph");
       Button save = new Button("Save as SVG");
       Button det = new Button("Graph Details");
+      Button sair = new Button("Exit");
       ColorPicker cp = new ColorPicker(Color.RED);
       
+      
+      //Mudar detalhes de sliders 
       Slider slider = new Slider();
       slider.setMin(3);
       slider.setMax(10);
@@ -142,40 +148,65 @@ public class MouseCircles extends Application {
       dots.setMax(30);
       dots.setValue(0);
       dots.setBlockIncrement(1);
-      
-      cp.setMaxWidth(50);
-      
+
+
+      //Pintura de fundo dos menus      
       pane.setBackground(new Background(new BackgroundFill(Color.rgb(245, 245, 230),null, null)));
       toolbar.setBackground(new Background(new BackgroundFill(Color.rgb(220, 220, 220),null, null)));
-      selector.getChildren().add(vertice);
-      selector.getChildren().add(arresta);
+      preferences.setBackground(new Background(new BackgroundFill(Color.rgb(210, 210, 210),null, null)));
+      menubox.setBackground(new Background(new BackgroundFill(Color.rgb(190, 190, 190),null, null)));
+      
+
+      
+      //Configuração de tamanho dos menus
+      cp.setMaxWidth(50);
       preferences.setMinHeight(110);
       preferences.setMaxHeight(110);
-      toolbar.setMaxWidth(200);
-      toolbar.setMinWidth(200);
-      toolbar.setTop(selector);
-      toolbar.setLeft(preferences);
-      toolbar.setBottom(menubox);
-      menubox.getChildren().add(novo);
-      menubox.getChildren().add(det);
-      menubox.getChildren().add(save);
-      
-      preferences.setBackground(new Background(new BackgroundFill(Color.rgb(210, 210, 210),null, null)));
-        
+      preferences.setMinWidth(170);
+      preferences.setMaxWidth(170);
+      toolbar.setMaxWidth(180);
+      toolbar.setMinWidth(180);
+
       toolbar.setPadding(new Insets(5));
       VBox.setMargin(selector,new Insets(4,0,5,15));
       VBox.setMargin(preferences,new Insets(0,0,100,0));
       selector.setSpacing(20);
+
+
+      //Alinhar botoes do menu
+      save.setMinSize(170, 20);
+      novo.setMinSize(170, 20);
+      det.setMinSize(170, 20);
+      sair.setMinSize(170, 20);
+      
+      //Adição de itens no menu da esquerda
+      toolbar.setTop(selector);
+      toolbar.setLeft(preferences);
+      toolbar.setBottom(menubox);
+      
+
+      //Adição de botoes no menu principal
+      menubox.getChildren().add(novo);
+      menubox.getChildren().add(det);
+      menubox.getChildren().add(save);
+      menubox.getChildren().add(sair);
+
+      //Adição de botoes no menu de seleção
+      selector.getChildren().add(vertice);
+      selector.getChildren().add(arresta);     
+      
+      //Adição dos menus na tela principal 
       root.setCenter(pane);
       root.setLeft(toolbar);
       
-      save.setAlignment(Pos.BOTTOM_CENTER);
       
+      //Criação do programa
       Scene scene = new Scene(root, 600, 500);
       stage.setTitle("JavaFX Graph Editor");
       stage.setScene(scene);
       stage.show();
       
+      //Ação para os botões
       vertice.setOnAction((ActionEvent event) -> {
           tool = 1;        
           preferences.getChildren().clear();
@@ -201,6 +232,10 @@ public class MouseCircles extends Application {
          pane.getChildren().clear();
       });
       
+      sair.setOnAction((ActionEvent event) ->{
+         stage.close();
+      });
+      
       save.setOnAction((ActionEvent event) -> {
           
             FileChooser fileChooser = new FileChooser();
@@ -221,26 +256,28 @@ public class MouseCircles extends Application {
           alert.setHeaderText("Esses são os dados do grafo");
           int v = ALL.getGraphVerticesSize();
           int a = ALL.getGraphArestasSize();
-          int c = ALL.getGraphCrosses();
+          int c = ALL.checkCrosses();
           alert.setContentText(" Vertices: "+v+"\n Arestas: "+a+" \n Arestas Concorrentes: "+c+"\n\n");
           alert.showAndWait();
       });
       
       cp.setOnAction((ActionEvent t) -> {
           color = cp.getValue();
-       });
+      });
       
-       slider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
-           stroke = new_val.floatValue();
-       });
+      slider.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
+          stroke = new_val.floatValue();
+      });
        
-       dots.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
-           stroke2 = new_val.floatValue();
-       });
+      dots.valueProperty().addListener((ObservableValue<? extends Number> ov, Number old_val, Number new_val) -> {
+          stroke2 = new_val.floatValue();
+      });
       
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+    
+    
 }
