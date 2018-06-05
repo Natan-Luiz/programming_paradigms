@@ -91,6 +91,7 @@ class Grafo{
             pw.println("<svg height=\"" + 500 + "\" width=\"" + 600 + "\">");
             this.verts.forEach((v) -> {
                 v.saidas.forEach((a) -> {
+                   //stroke multiplicada por 1.3 para correçao e niveis e largura entre svg e javafx
                     if(a.getStrokeDashArray().isEmpty())
                         pw.println("<line x1=\""+a.getStartX()+"\" y1=\""+a.getStartY()+"\" x2=\""+a.getEndX()+"\" y2=\""+a.getEndY()+"\" stroke-dasharray=\" 0 \" style=\"stroke:"+a.getColorHex()+";stroke-width:"+(a.getStrokeWidth()*1.3)+"\" />");
                     else
