@@ -1,6 +1,6 @@
-#Trabalho 6 da disciplina de Paradigmas da Computação.
+### Trabalho 6 da disciplina de Paradigmas da Computação.
 
-Arquivos:
--MyPlanarity.java
--Grafo.java
--GraphMaker.java
+Arquivos: 
+ - MyPlanarity.java 
+ - Grafo.java 
+ - GraphMaker.java 
