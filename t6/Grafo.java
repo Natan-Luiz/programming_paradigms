@@ -1,13 +1,10 @@
 package myplanarity;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Shape;
 
 class Grafo{
    private int crosses;
@@ -17,26 +14,33 @@ class Grafo{
       verts = new ArrayList();
    }
    
+   //obtem um vertice da lista de vertices
    public Vertice getVertice(int index){
        return verts.get(index);
    }
    
+   //adiciona um vertice ao grafo
    public void addVertice(Circle c){
         Vertice v = new Vertice(c);
         this.verts.add(v);
    }
    
+   //adiciona uma aresta ao grafo
    public void addAresta(Line l,Vertice v1, Vertice v2){
        Aresta a = new Aresta(v1,l);
        a.setEnd(v2);
-       v1.saidas.add(a);
+       v1.getSaidas().add(a);
    }
    
+   //muda a posição de um vertice e todas as arestas ligadas a ele
    public void changePosition(Vertice v, double x, double y){
+       //muda posicao do vertice
         v.changePos(x, y);        
+        //muda posicao das arestas que saem do vertice
         for(int i=0;i<v.NumArestas();i++)
             v.getAresta(i).changeStart(x,y);  
         
+        //muda posicao das arestas que chegam ao vertice
         for(Vertice w: this.verts){
             for(int i=0;i < w.NumArestas();i++){
                 if(w.getAresta(i).getEnd() == v){
@@ -46,33 +50,33 @@ class Grafo{
         }
    }
    
+   //checa o numero de intersecções do grafo
    public int checkCrosses(){
-       crosses = 0;
+        crosses = 0;
         this.verts.forEach((v) -> {
-          v.saidas.forEach((a) -> {
-             this.verts.forEach((w) -> {
-               if(v != w){ 
-                  w.saidas.forEach((ar) -> {
-                      if (a != ar){
-                         Shape intersect = Shape.intersect(a, ar);
-                         if (intersect.getBoundsInLocal().getWidth() != -1)
-                            if(ar.getEnd() != v && a.getEnd() != w && ar.getEnd() != a.getEnd())
-                               crosses++;
-                      }
-                  });
-               }
+             v.getSaidas().forEach((a) -> {
+                 this.verts.forEach((w) -> {
+                      w.getSaidas().forEach((ar) -> {
+                            if(ar.getEnd() != v  &&  a.getEnd() != w  &&  ar.getEnd() != a.getEnd() && v != w){
+                                if (Line2D.linesIntersect(a.getStartX(),a.getStartY(),a.getEndX(),a.getEndY(),ar.getStartX(),ar.getStartY(),ar.getEndX(),ar.getEndY())){
+                                    crosses++;
+                                }
+                            }
+                      });
+                 });
              });
-           });
         });
         return crosses/2;
    }
    
+   //verifica se ponto da tela representa um vertice
    public Vertice isVertice(double x, double y){
        if (this.isOk(x, y, -1) != -1)
-          return(this.verts.get(this.isOk(x, y, -1)));
+           return(this.verts.get(this.isOk(x, y, -1)));
        else return null;
    }
    
+   //verifica qual vertice representa aquela posição da tela
    public int isOk(double x, double y, int vert){
       if(verts.isEmpty()) return -1;
       int curr = 0;
@@ -84,47 +88,27 @@ class Grafo{
       }
       return -1;
    }
-   
+  
    private int isReallyOk(int ini, int end){
        if(end == -1) return ini;
-       for(Aresta a: this.verts.get(ini).saidas){        
+       for(Aresta a: this.verts.get(ini).getSaidas()){        
            if(a.getEnd() == this.verts.get(end))
                return -1;
        }
-       if(this.verts.get(end).saidas.isEmpty()) return ini;
+       if(this.verts.get(end).getSaidas().isEmpty()) return ini;
        
-       for(Aresta a: this.verts.get(end).saidas){        
+       for(Aresta a: this.verts.get(end).getSaidas()){        
            if(a.getEnd() == this.verts.get(ini))
                return -1;
        }
        return ini;
    }
    
-   public int makeSVG(File file) throws FileNotFoundException{
-      PrintWriter pw = new PrintWriter(file);
-            
-            pw.println("<svg height=\"" + 500 + "\" width=\"" + 600 + "\">");
-            this.verts.forEach((v) -> {
-                v.saidas.forEach((a) -> {
-                    if(a.getStrokeDashArray().isEmpty())
-                        pw.println("<line x1=\""+a.getStartX()+"\" y1=\""+a.getStartY()+"\" x2=\""+a.getEndX()+"\" y2=\""+a.getEndY()+"\" stroke-dasharray=\" 0 \" style=\"stroke:"+a.getColorHex()+";stroke-width:"+(a.getStrokeWidth()*1.3)+"\" />");
-                    else
-                        pw.println("<line x1=\""+a.getStartX()+"\" y1=\""+a.getStartY()+"\" x2=\""+a.getEndX()+"\" y2=\""+a.getEndY()+"\" stroke-dasharray=\" "+ a.getStrokeDashArray().get(0) +" "+ a.getStrokeDashArray().get(0) +"\" style=\"stroke:"+a.getColorHex()+";stroke-width:"+(a.getStrokeWidth()*1.3)+"\" />");
-                });
-           });
-            
-            this.verts.forEach((v) -> {
-                pw.println("  <circle cx=\"" + v.getCenterX() + "\" cy=\"" + v.getCenterY()  + "\" r=\"" + v.getRadius() + "\" stroke=\"black\" stroke-width=\""+v.getStrokeWidth()+"\" fill=\"" + v.getColorHex() + "\" />");
-            });
-            pw.println("</svg>");
-                        
-            pw.close();
-       return 0;
-   }
    
+  //reseta o grafo
    public void reset(){
        this.verts.forEach((v) -> {
-           v.saidas.clear();
+           v.getSaidas().clear();
        });
        this.verts.clear();
    }
@@ -133,13 +117,13 @@ class Grafo{
        return this.verts.size();
    }
    public int getGraphArestasSize(){
-       return this.verts.stream().map((v) -> v.saidas.size()).reduce(0, Integer::sum);
+       return this.verts.stream().map((v) -> v.getSaidas().size()).reduce(0, Integer::sum);
     }
 }
 
 
 class Vertice extends Circle{
-   public List<Aresta> saidas;
+   private List<Aresta> saidas;
    public Vertice(Circle c){
       this.setCenterX(c.getCenterX());
       this.setCenterY(c.getCenterY());
@@ -150,6 +134,7 @@ class Vertice extends Circle{
       saidas = new ArrayList();
    }
    
+   //verifica se ponto esta dentro do circulo do vertice
    public int isInto(double x, double y){
       if(getCenterX() + getRadius() >= x && getCenterX() - getRadius() <= x)
          if(getCenterY() + getRadius() >= y && getCenterY() - getRadius() <= y)
@@ -163,13 +148,20 @@ class Vertice extends Circle{
         return "#"+ a.substring(2, 8);
     }
     
+    //muda posicao do vertice
     public void changePos(double x, double y){
         setCenterX(x);
         setCenterY(y);
     }
     
+    //obtem aresta especifica de um vertice
     public Aresta getAresta(int idx){
         return saidas.get(idx);
+    }
+    
+    //obtem a lista de arestas de um vertice
+    public List<Aresta> getSaidas(){
+        return saidas;
     }
     
     public int NumArestas(){
