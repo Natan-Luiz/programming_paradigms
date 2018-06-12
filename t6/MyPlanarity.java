@@ -2,7 +2,6 @@ package myplanarity;
 
 import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Application;
-import static javafx.application.Application.launch;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,14 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -30,7 +22,7 @@ public class MyPlanarity extends Application {
     private int lvl;
     private BorderPane root;
    @Override
-    public void start(Stage stage) throws InterruptedException {  
+    public void start(Stage stage){  
         lvl = 0;
         ALL= new Grafo();
         stage.setTitle("My Planarity");
@@ -39,7 +31,8 @@ public class MyPlanarity extends Application {
         gameScene(stage);
     }
    
-    public void gameScene(Stage stage) throws InterruptedException{
+    //cena do programa
+    public void gameScene(Stage stage){
         root = new BorderPane();
          
         newGame();
@@ -48,16 +41,16 @@ public class MyPlanarity extends Application {
         stage.setScene(scene);
     }
    
+    //painel do jogo
     public Pane game(int verts){
         Pane pane = new Pane();
         
-       pane.setBackground(new Background(new BackgroundImage(new Image("https://imgur.com/a/fiXXfdh"),null,null,null,null)));
         GraphMaker gm = new GraphMaker(verts,ALL);
         randGraph(verts,50,650);
         
         mouseEvents(pane);
         
-        for(int i=0; i< verts; i++){
+        for(int i=0; i<= verts; i++){
             for(int j=0; j< ALL.getVertice(i).NumArestas();j++)
                 pane.getChildren().add(ALL.getVertice(i).getAresta(j));
         }
@@ -68,9 +61,8 @@ public class MyPlanarity extends Application {
         
         return pane;
     }
-    
+    //eventos do mouse
     public void mouseEvents(Pane pane){
-        int flag = 0;
            pane.setOnMousePressed((MouseEvent e) -> {
                Selected = ALL.isVertice(e.getX(), e.getY());
            });
@@ -80,12 +72,13 @@ public class MyPlanarity extends Application {
                    ALL.changePosition(Selected, e.getX(), e.getY());
            });
 
-            pane.setOnMouseReleased((MouseEvent e) -> {
+            pane.setOnMouseReleased((MouseEvent e) -> { 
                 if(ALL.checkCrosses() == 0)
-                endLvl();
+                    endLvl();
             });
     }
     
+    //nivel atual
     public Label nivel(){
        
         String str = "Level "+ lvl;
@@ -95,6 +88,7 @@ public class MyPlanarity extends Application {
         return level;
     }
    
+    //gera tela de fim de fase
     public void endLvl(){
         Label endGame = new Label("Nível Concluído!!");
         Button b = new Button("Continuar");
@@ -112,8 +106,8 @@ public class MyPlanarity extends Application {
         b.setFont(Font.font(20));
         
         b.setOnMousePressed((MouseEvent e) -> {
-               newGame();
-           });
+            newGame();
+        });
         
         endGame.setTextFill(Color.RED);
         endGame.setFont(Font.font(STYLESHEET_CASPIAN, FontWeight.EXTRA_BOLD, 60));
@@ -121,7 +115,7 @@ public class MyPlanarity extends Application {
         root.setCenter(ending);
         
     }
-   
+   //gera um novo jogo/nivel
     public void newGame(){
         ALL.reset();
         
@@ -131,6 +125,7 @@ public class MyPlanarity extends Application {
         
     }
     
+    //Da uma posicao aleatoria para os vertices do grafo
     public void randGraph(int verts, int m, int n){
         int min = m;
         int max = n;
